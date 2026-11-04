@@ -148,6 +148,9 @@ export function AuthForm({ mode }: { mode: "login" | "cadastro" }) {
           </p>
         </form>
         <p className="auth-switch">
+          <Link href="/minha-area">Explorar minha área em modo local</Link>
+        </p>
+        <p className="auth-switch">
           {registering ? "Já tem uma conta?" : "Ainda não tem uma conta?"}{" "}
           <Link href={registering ? "/login" : "/cadastro"}>
             {registering ? "Entre aqui" : "Cadastre-se"}

@@ -1,30 +1,17 @@
 # Proposta de pull request
 
-**Título:** Cria base Next.js da plataforma Estética e Bem-Estar
+**Título:** Adiciona área local de cuidado com planejamentos, hábitos e fidelidade demonstrativa
 
-## Alteração
+A seleção de agendamento agora salva serviço, profissional, data e horário neste navegador. Datas passadas e planos sobrepostos são rejeitados. `/minha-area` exibe os registros e permite removê-los com confirmação; a home e o menu direcionam para essa área.
 
-Introduz uma aplicação Next.js com TypeScript e Tailwind, aproveitando a identidade e os temas do HTML inicial. Inclui home responsiva, cabeçalho com menu móvel, rodapé com serviços de apoio, serviços, profissionais ilustrativos, planejamento de agendamento, conteúdos educativos e telas de login/cadastro.
+A área também registra cuidados opcionais por dia, exibe os últimos sete dias e calcula pontos reversíveis (10 por cuidado) e níveis demonstrativos. Não há descontos reais ou pontuação por reserva. Dados ficam em `localStorage`, sem vínculo com contas Firebase ou autenticação; essa limitação aparece na interface. O estado atualiza entre abas da mesma origem e o dia é reavaliado a cada minuto. Armazenamento inválido é preservado com mensagem de erro.
 
-O cliente Firebase é inicializado apenas quando suas variáveis estão presentes. Authentication por e-mail/senha está preparado; Firestore é disponibilizado pelo cliente, sem operações de dados. Agendamento, perfis e fidelização permanecem demonstrativos, com indicação visível na interface. O HTML original foi preservado.
+## Validação
 
-## Roteiro de revisão
-
-- Instalar dependências e executar `npm run lint`, `npm run typecheck` e `npm run build`.
-- Abrir `/`, `/login` e `/cadastro` em desktop e celular; navegar por teclado e pelo menu móvel.
-- Verificar âncoras, seleção de serviço/profissional, rejeição de data passada e mensagem de ausência de reserva.
-- Sem Firebase: verificar feedback de acesso ainda indisponível, validação de e-mail e confirmação de senha.
-- Com um projeto de desenvolvimento configurado: habilitar E-mail/senha e verificar cadastro, login, erros e ausência de gravações Firestore.
+- `npm run lint`, `npm run typecheck` e `GITHUB_PAGES=true npm run build`.
+- `npm run test:e2e`: testes Playwright para persistência, sobreposição, remoção, hábitos/pontos, datas passadas, registros de dias anteriores e falhas de armazenamento.
+- Revisão responsiva de `/minha-area` em 320 pixels.
 
 ## Limites
 
-Sem backend de agendamento, painel autenticado, artigos completos, regras Firestore ou implantação. Conteúdo educativo não realiza diagnóstico. Não há fotografias ou fontes externas exigidas para renderizar a página.
-
-## Validação executada nesta implementação
-
-- `npm run lint`: passou, sem avisos.
-- `npm run typecheck`: passou.
-- `npm run build`: passou, gerando `/`, `/login`, `/cadastro` e a página padrão de erro.
-- Chromium/Playwright: três rotas retornaram HTTP 200; larguras de 1440, 390 e 320 pixels sem overflow horizontal; menu móvel abre e fecha após navegação.
-- Formulários: confirmação de senha, feedback sem Firebase configurado, rejeição de data passada e indicação de que nenhum horário foi reservado.
-- Nenhum erro de JavaScript durante esses cenários. Autenticação real e Firestore não foram exercitados: projeto Firebase não configurado.
+Sem disponibilidade real, envio ao profissional, reserva confirmada, dados médicos, sincronização Firestore ou isolamento por conta. Pessoas no mesmo navegador/origem compartilham os registros locais. Nenhuma infraestrutura Firebase foi provisionada. O conteúdo é educativo; o programa de fidelidade é uma demonstração.

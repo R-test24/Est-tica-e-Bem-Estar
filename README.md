@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abra `http://localhost:3000` no seu navegador. Rotas: `/`, `/login` e `/cadastro`. O site público funciona sem variáveis Firebase e não precisa de banco de dados para exibir o conteúdo inicial.
+Abra `http://localhost:3000` no seu navegador. Rotas: `/`, `/login`, `/cadastro` e `/minha-area`. O site público funciona sem variáveis Firebase e não precisa de banco de dados para exibir o conteúdo inicial.
 
 O `package-lock.json` está versionado. Use `npm ci` para reproduzir a instalação; `npm install` fica reservado à atualização intencional de dependências.
 
@@ -42,7 +42,9 @@ index.html               HTML original enviado, preservado
 - Login e cadastro por e-mail/senha usando Firebase Authentication **quando configurado**. Sem configuração, o site informa que o acesso ainda não está disponível e não envia dados.
 - Inicialização do cliente Firestore preparada; nenhuma leitura ou gravação de documentos nesta etapa.
 
-Serviços e profissionais são exemplos. O formulário de agendamento apenas valida a seleção; não consulta disponibilidade nem reserva horários. Área pessoal, fidelidade, registros de hábitos, gestão de profissionais e persistência de agendamentos ficam para as próximas etapas. Os cartões educativos apresentam textos curtos, sem páginas de artigos ou diagnóstico médico.
+Serviços e profissionais são exemplos. O formulário salva planejamentos no navegador, exige data e horário futuros e impede sobreposição com outros planos locais considerando a duração do serviço. Não consulta disponibilidade nem reserva horários. A área `/minha-area` lista e permite remover esses planos com confirmação. Também registra três cuidados diários opcionais, mostra o histórico dos últimos sete dias e calcula 10 pontos demonstrativos por cuidado marcado. Desmarcar remove os pontos; os níveis Semente, Cultivar e Florescer não geram recompensas reais.
+
+Os registros usam `localStorage`, sem vínculo com Firebase Authentication, sem controle de acesso e sem sincronização entre dispositivos. Pessoas usando o mesmo navegador e origem compartilham os dados; não registre informações sensíveis. Limpar os dados do site apaga os registros. Dados inválidos ou armazenamento bloqueado exibem erro e não são sobrescritos silenciosamente. O modo local funciona no GitHub Pages, sob a mesma origem. Gestão de profissionais, área autenticada e persistência Firestore ficam para uma etapa futura. Os cartões educativos apresentam textos curtos, sem páginas de artigos ou diagnóstico médico.
 
 ## Configurar Firebase futuramente
 
@@ -52,7 +54,7 @@ Serviços e profissionais são exemplos. O formulário de agendamento apenas val
 4. Reinicie o servidor. Valide criação de conta, entrada e mensagens de erro com um projeto de desenvolvimento.
 5. Antes de usar Firestore, defina instância/edição, região, modelo de dados e regras de acesso. Crie testes de regras e use emuladores antes de liberar gravações. Não habilite acesso público irrestrito. O código atual não exige criar um banco nem implantar regras.
 
-A criação de conta persiste apenas no Firebase Authentication. Não há perfil Firestore, dados médicos ou registros de hábitos. A configuração Firebase e os fluxos reais de autenticação precisam ser validados no projeto escolhido. Em produção, revise política de privacidade, fluxo de recuperação de senha, verificação de e-mail e gestão de sessão conforme a próxima etapa do produto.
+A criação de conta persiste apenas no Firebase Authentication. Não há perfil Firestore ou coleta de dados médicos. Os cuidados diários são registrados apenas no navegador. A configuração Firebase e os fluxos reais de autenticação precisam ser validados no projeto escolhido. Em produção, revise política de privacidade, fluxo de recuperação de senha, verificação de e-mail e gestão de sessão conforme a próxima etapa do produto.
 
 ## Implantação
 
@@ -68,11 +70,11 @@ npm run build
 npm start
 ```
 
-Defina `PORT` se necessário, mantenha o processo sob supervisão e configure HTTPS no proxy da sua hospedagem. Alternativamente, Firebase App Hosting suporta aplicações Next.js; a criação do backend, vínculo com o repositório e faturamento devem ser configurados numa etapa de implantação específica. Este projeto não realiza deploy automaticamente.
+Defina `PORT` se necessário, mantenha o processo sob supervisão e configure HTTPS no proxy da sua hospedagem. Alternativamente, Firebase App Hosting suporta aplicações Next.js; a criação do backend, vínculo com o repositório e faturamento devem ser configurados numa etapa de implantação específica. A publicação automática disponível é a do GitHub Pages, descrita abaixo.
 
 ## Revisão
 
-Veja `docs/review.md` para escopo e roteiro de verificação. Nenhuma infraestrutura Firebase foi provisionada e nenhuma implantação é disparada por este repositório.
+Veja `docs/review.md` para escopo e roteiro de verificação. Nenhuma infraestrutura Firebase foi provisionada. O workflow de GitHub Pages exige habilitação nas configurações do repositório.
 
 ### GitHub Pages
 
@@ -81,3 +83,12 @@ O workflow `.github/workflows/pages.yml` publica a exportação estática a cada
 O workflow usa `GITHUB_PAGES=true` para exportar em `out/` com o prefixo `/Est-tica-e-Bem-Estar`. O desenvolvimento local e o build Node.js continuam sem esse prefixo. Para reproduzir a exportação: `GITHUB_PAGES=true npm run build` (Bash). A pasta `out/` é gerada e não deve ser versionada.
 
 GitHub Pages hospeda arquivos estáticos: não oferece API, SSR nem banco de dados. Os fluxos Firebase executados no navegador são compatíveis; para ativá-los, cadastre as quatro variáveis públicas em **Settings → Secrets and variables → Actions → Variables** e autorize `r-test24.github.io` no Firebase Authentication. Alterações exigem novo build. Reservas reais e operações privilegiadas precisarão de um backend separado. Quando apenas `main` for a branch oficial, remova a branch inicial da lista `on.push.branches` do workflow para manter uma única origem de publicação.
+
+## Testes das funcionalidades
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+Os testes iniciam um servidor de desenvolvimento na porta 3100. Cobrem persistência após recarga, prevenção de sobreposição, remoção com confirmação, hábitos, pontos reversíveis, virada de dia (registros antigos), datas passadas e preservação de armazenamento inválido. Para usar um Chromium já instalado no Linux: `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e`. A área local é aberta pelo menu **Minha área**, sem exigir login.

@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import { saveBooking } from "@/lib/local-care";
 import { services, professionals } from "@/data/content";
 import { ArrowRight, CalendarDays } from "lucide-react";
 export function BookingForm() {
@@ -11,21 +13,29 @@ export function BookingForm() {
       onSubmit={(event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const selected = String(data.get("date"));
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (new Date(selected + "T00:00:00") < today) {
-          setMessage("Escolha uma data a partir de hoje.");
-          return;
+        try {
+          saveBooking({
+            service: String(data.get("service")),
+            professional: String(data.get("professional")),
+            date: String(data.get("date")),
+            time: String(data.get("time")),
+          });
+          setMessage(
+            "Planejamento salvo neste navegador. Nenhum horário foi reservado com o profissional.",
+          );
+          event.currentTarget.reset();
+        } catch (error) {
+          setMessage(
+            error instanceof Error
+              ? error.message
+              : "Não foi possível salvar. Confira se o armazenamento do navegador está disponível.",
+          );
         }
-        setMessage(
-          "Sua seleção está pronta. O agendamento online será disponibilizado em breve; nenhum horário foi reservado.",
-        );
       }}
     >
       <label>
         Seu momento de cuidado
-        <select required defaultValue="">
+        <select name="service" required defaultValue="">
           <option disabled value="">
             Escolha um serviço
           </option>
@@ -36,7 +46,7 @@ export function BookingForm() {
       </label>
       <label>
         Com quem?
-        <select required defaultValue="">
+        <select name="professional" required defaultValue="">
           <option disabled value="">
             Escolha um profissional
           </option>
@@ -49,14 +59,22 @@ export function BookingForm() {
         Melhor dia
         <input type="date" name="date" required aria-label="Data desejada" />
       </label>
+      <label>
+        Horário desejado
+        <input type="time" name="time" required />
+      </label>
       <button className="button button-primary" type="submit">
         <CalendarDays size={17} aria-hidden="true" />
         Planejar meu cuidado
         <ArrowRight size={17} aria-hidden="true" />
       </button>
       <p className="form-note">
-        Demonstração de agendamento. Disponibilidade e reservas em breve.
+        Seus planos ficam apenas neste navegador. Não há consulta de
+        disponibilidade nem confirmação de reserva.
       </p>
+      <Link href="/minha-area" className="text-link">
+        Ver meus planejamentos ↗
+      </Link>
       <p role="status" className="form-message">
         {message}
       </p>

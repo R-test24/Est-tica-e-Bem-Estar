@@ -7,6 +7,7 @@ const links = [
   ["Profissionais", "/#profissionais"],
   ["Bem-estar", "/#bem-estar"],
   ["Agendamento", "/#agendamento"],
+  ["Minha área", "/minha-area"],
 ];
 export function Header() {
   const [open, setOpen] = useState(false);

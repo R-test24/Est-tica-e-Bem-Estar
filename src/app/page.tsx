@@ -218,12 +218,12 @@ export default function Home() {
           <div>
             <h3>Seu cuidado merece continuidade.</h3>
             <p>
-              Em breve: acompanhamento de hábitos e um programa de fidelidade
-              para celebrar sua jornada.
+              Acompanhe seus cuidados diários e pontos demonstrativos para
+              celebrar sua jornada.
             </p>
           </div>
-          <ActionLink href="/cadastro" secondary>
-            Faça parte
+          <ActionLink href="/minha-area" secondary>
+            Minha jornada
           </ActionLink>
         </div>
       </section>
