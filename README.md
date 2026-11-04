@@ -73,3 +73,11 @@ Defina `PORT` se necessário, mantenha o processo sob supervisão e configure HT
 ## Revisão
 
 Veja `docs/review.md` para escopo e roteiro de verificação. Nenhuma infraestrutura Firebase foi provisionada e nenhuma implantação é disparada por este repositório.
+
+### GitHub Pages
+
+O workflow `.github/workflows/pages.yml` publica a exportação estática a cada push em `main` ou `feat/plataforma-estetica-bem-estar`, ou manualmente pela aba Actions. Em **Settings → Pages → Build and deployment**, selecione **GitHub Actions**. Se a proteção do ambiente `github-pages` restringir branches, autorize a branch de publicação. Após a implantação bem-sucedida, o endereço esperado é `https://r-test24.github.io/Est-tica-e-Bem-Estar/`.
+
+O workflow usa `GITHUB_PAGES=true` para exportar em `out/` com o prefixo `/Est-tica-e-Bem-Estar`. O desenvolvimento local e o build Node.js continuam sem esse prefixo. Para reproduzir a exportação: `GITHUB_PAGES=true npm run build` (Bash). A pasta `out/` é gerada e não deve ser versionada.
+
+GitHub Pages hospeda arquivos estáticos: não oferece API, SSR nem banco de dados. Os fluxos Firebase executados no navegador são compatíveis; para ativá-los, cadastre as quatro variáveis públicas em **Settings → Secrets and variables → Actions → Variables** e autorize `r-test24.github.io` no Firebase Authentication. Alterações exigem novo build. Reservas reais e operações privilegiadas precisarão de um backend separado. Quando apenas `main` for a branch oficial, remova a branch inicial da lista `on.push.branches` do workflow para manter uma única origem de publicação.
