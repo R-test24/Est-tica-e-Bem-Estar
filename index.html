@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Estética, autocuidado, saúde mental, prevenção e envelhecimento saudável.">
+<title>Essência | Estética e Bem-Estar</title>
+<style>
+:root{--green:#718b78;--dark:#293d34;--cream:#fbf8f1;--sage:#e6eee5;--muted:#66756d;--rose:#d8aa9d}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font:16px/1.65 Arial,sans-serif;background:var(--cream);color:var(--dark)}
+.container{width:min(1100px,92%);margin:auto}a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;background:#fbf8f1f2;backdrop-filter:blur(10px);z-index:5;border-bottom:1px solid #e7e4da}
+.nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}.logo{font: bold 25px Georgia,serif}.logo small{display:block;font:10px Arial;letter-spacing:2px;color:var(--green)}
+nav ul{display:flex;gap:20px;list-style:none}nav a{font-size:13px;font-weight:bold;color:#52645a}nav a:hover{color:#a07869}
+.btn{display:inline-block;background:var(--green);color:white;border:0;border-radius:28px;padding:12px 20px;font-weight:bold;cursor:pointer}.btn:hover{background:#526f5a}
+.menu{display:none;background:none;border:1px solid #ddd;border-radius:8px;padding:7px 12px;font-size:21px}
+.hero{padding:85px 0;background:linear-gradient(110deg,#f7f3e9,#e2ece1)}.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}
+.kicker{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#98786b;font-weight:bold;margin-bottom:14px}
+h1{font:clamp(40px,5vw,64px)/1.08 Georgia,serif;margin-bottom:20px}h1 em{color:var(--green);font-weight:normal}.hero p{font-size:18px;color:var(--muted);margin-bottom:25px}
+.art{height:350px;border-radius:48% 48% 18px 18px;background:linear-gradient(140deg,#c9d9c9,#a9c0ad);display:grid;place-items:center;position:relative;font-size:110px}
+.art span{position:absolute;bottom:20px;background:#fbf8f1ed;border-radius:12px;padding:10px 16px;font:italic 17px Georgia}
+section{padding:75px 0}.head{text-align:center;max-width:700px;margin:0 auto 38px}.head h2,.copy h2,.mental h2,.contact h2{font:clamp(30px,4vw,42px)/1.15 Georgia,serif;margin-bottom:12px}.head p,.muted{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:white;border:1px solid #e8e6dc;border-radius:17px;padding:24px;box-shadow:0 7px 25px #344b3e0d}.icon{font-size:30px;margin-bottom:10px}.card h3{font:21px Georgia,serif;margin-bottom:8px}.card p{font-size:14px;color:var(--muted)}
+.soft{background:#e9efe7}.two{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}.copy p,.mental p{color:var(--muted);margin:12px 0}.note{background:white;border-left:4px solid var(--rose);padding:16px;margin-top:18px;border-radius:0 10px 10px 0;font-size:14px}
+.steps{display:grid;gap:13px}.step{display:flex;gap:14px;background:white;padding:16px;border-radius:13px}.step b{background:var(--sage);color:#48614d;border-radius:50%;width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center}.step p{font-size:14px}
+.art2{min-height:300px;background:linear-gradient(140deg,#d7e3d4,#f0e4d9);border-radius:20px;display:grid;place-items:center;font-size:100px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.pills span{border:1px solid #cbd7ca;color:#5b735f;border-radius:20px;padding:6px 12px;font-size:13px;font-weight:bold}
+.contact{background:#344b3e;color:white}.contact p{color:#d5dfd5;margin:12px 0 20px}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+form{background:white;color:var(--dark);padding:24px;border-radius:17px;display:grid;gap:12px}label{font-size:13px;font-weight:bold}input,textarea,select{width:100%;padding:12px;margin-top:5px;border:1px solid #d8ded5;border-radius:8px;font:inherit}input:focus,textarea:focus,select:focus{outline:2px solid #91aa94;outline-offset:2px}textarea{min-height:95px}
+footer{padding:24px 0;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.disclaimer{font-size:12px;margin-top:12px}
+@media(max-width:800px){.menu{display:block}nav{display:none;position:absolute;top:74px;left:0;right:0;background:var(--cream);padding:18px 4%}nav.open{display:block}nav ul{flex-direction:column}.nav>.btn{display:none}.hero-grid,.two,.contact-grid{grid-template-columns:1fr}.art{height:280px}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){section{padding:58px 0}.cards{grid-template-columns:1fr}.hero{padding:60px 0}.hero p{font-size:16px}}
+</style></head>
+<body>
+<header><div class="container nav">
+<a class="logo" href="#inicio">essência<small>ESTÉTICA • SAÚDE • BEM-ESTAR</small></a>
+<button class="menu" id="menu" aria-label="Abrir menu" aria-expanded="false">☰</button>
+<nav id="nav" aria-label="Menu principal"><ul>
+<li><a href="#inicio">Início</a></li><li><a href="#bemestar">Bem-estar</a></li><li><a href="#mental">Saúde mental</a></li><li><a href="#prevencao">Prevenção</a></li><li><a href="#envelhecimento">Envelhecimento</a></li><li><a href="#contato">Contato</a></li>
+</ul></nav><a class="btn" href="#contato">Fale conosco</a></div></header>
+<main>
+<section class="hero" id="inicio"><div class="container hero-grid"><div>
+<div class="kicker">Cuidar de si é um caminho</div><h1>Beleza que acolhe. <em>Bem-estar que transforma.</em></h1>
+<p>Informação e inspiração para cultivar autoestima, saúde mental, prevenção e qualidade de vida em todas as fases da vida.</p>
+<a class="btn" href="#bemestar">Explore os temas</a></div>
+<div class="art" role="img" aria-label="Folhagem simbolizando equilíbrio e autocuidado">🌿<span>Seu bem-estar merece atenção todos os dias.</span></div></div></section>
+
+<section id="bemestar"><div class="container"><div class="head"><div class="kicker">Estética e bem-estar</div><h2>Autocuidado vai além da aparência</h2><p>Pequenas atitudes podem fortalecer a autoestima e apoiar uma rotina mais equilibrada, respeitando a individualidade de cada pessoa.</p></div>
+<div class="cards">
+<article class="card"><div class="icon">🌸</div><h3>Autoestima e acolhimento</h3><p>Valorize sua história e cultive uma relação respeitosa com seu corpo e sua imagem.</p></article>
+<article class="card"><div class="icon">🧴</div><h3>Cuidados com a pele</h3><p>Rotina simples, proteção solar e orientação profissional adequada ao seu tipo de pele.</p></article>
+<article class="card"><div class="icon">🧘</div><h3>Equilíbrio diário</h3><p>Reserve momentos para descanso, lazer, movimento e atividades prazerosas.</p></article>
+</div></div></section>
+
+<section class="soft" id="mental"><div class="container two"><div class="mental"><div class="kicker">Saúde mental</div><h2>Ansiedade merece atenção e cuidado.</h2>
+<p>A ansiedade pode afetar pensamentos, emoções, sono, relações e atividades diárias. Quando o sofrimento é frequente ou interfere na rotina, buscar ajuda profissional é importante.</p>
+<p>Falar sobre saúde mental ajuda a reduzir o estigma e aproxima as pessoas de informação confiável e acolhimento.</p>
+<div class="note"><strong>Importante:</strong> este site é informativo e não substitui avaliação, diagnóstico ou tratamento com profissionais de saúde.</div></div>
+<div class="steps">
+<div class="step"><b>1</b><div><strong>Perceba os sinais</strong><p>Observe mudanças persistentes no sono, humor, concentração ou disposição.</p></div></div>
+<div class="step"><b>2</b><div><strong>Converse com alguém</strong><p>Compartilhe como está se sentindo com uma pessoa de confiança.</p></div></div>
+<div class="step"><b>3</b><div><strong>Busque apoio</strong><p>Psicólogos, médicos e serviços de saúde podem orientar os próximos passos.</p></div></div>
+</div></div></section>
+
+<section id="prevencao"><div class="container"><div class="head"><div class="kicker">Prevenção</div><h2>Hábitos que ajudam a cuidar da saúde</h2><p>Prevenção combina escolhas possíveis, acompanhamento adequado e atenção às necessidades individuais.</p></div>
+<div class="cards">
+<article class="card"><div class="icon">🥗</div><h3>Alimentação equilibrada</h3><p>Priorize variedade e hábitos sustentáveis, respeitando suas necessidades.</p></article>
+<article class="card"><div class="icon">🚶</div><h3>Movimento</h3><p>Encontre formas seguras e prazerosas de se movimentar, respeitando seus limites.</p></article>
+<article class="card"><div class="icon">🌙</div><h3>Sono e descanso</h3><p>Horários regulares e uma rotina tranquila podem favorecer o sono.</p></article>
+<article class="card"><div class="icon">🩺</div><h3>Acompanhamento</h3><p>Converse com profissionais sobre exames, vacinas e cuidados indicados para você.</p></article>
+<article class="card"><div class="icon">🤝</div><h3>Conexões sociais</h3><p>Fortaleça vínculos, participe da comunidade e procure apoio quando precisar.</p></article>
+<article class="card"><div class="icon">☀️</div><h3>Proteção no dia a dia</h3><p>Use proteção solar e evite hábitos que possam prejudicar sua saúde.</p></article>
+</div></div></section>
+
+<section class="soft" id="envelhecimento"><div class="container two"><div class="art2" role="img" aria-label="Árvore simbolizando crescimento e envelhecimento saudável">🌳</div><div class="copy">
+<div class="kicker">Envelhecimento saudável</div><h2>Viver mais, viver com qualidade.</h2>
+<p>Envelhecer faz parte da vida. O cuidado integral considera saúde física e mental, autonomia, participação social e respeito às escolhas de cada pessoa.</p>
+<p>Aprender algo novo, manter vínculos, adaptar ambientes e acompanhar a saúde podem apoiar a independência e a qualidade de vida.</p>
+<div class="pills"><span>Autonomia</span><span>Movimento</span><span>Vínculos</span><span>Prevenção</span><span>Respeito</span></div>
+</div></div></section>
+
+<section class="contact" id="contato"><div class="container contact-grid"><div>
+<div class="kicker" style="color:#e0c0b3">Contato</div><h2>Vamos conversar?</h2><p>Envie uma mensagem para tirar dúvidas, sugerir temas ou saber mais sobre este projeto de estética e bem-estar.</p><p>O formulário pode ser conectado ao WhatsApp ou a um serviço de e-mail.</p>
+</div>
+<form id="form"><label for="nome">Nome<input id="nome" required placeholder="Como podemos chamar você?"></label>
+<label for="email">E-mail<input id="email" type="email" placeholder="seuemail@exemplo.com"></label>
+<label for="assunto">Assunto<select id="assunto"><option>Informações gerais</option><option>Estética e autocuidado</option><option>Saúde mental</option><option>Prevenção</option><option>Envelhecimento saudável</option></select></label>
+<label for="mensagem">Mensagem<textarea id="mensagem" required placeholder="Escreva sua mensagem..."></textarea></label>
+<button class="btn" type="submit">Enviar mensagem</button><small style="color:#66756d">Demonstração: configure o destino de envio no JavaScript.</small></form>
+</div></section>
+</main>
+<footer><div class="container"><div class="foot"><span>© <span id="year"></span> Essência — Estética, Saúde e Bem-Estar</span><span>Informação, acolhimento e qualidade de vida.</span></div><p class="disclaimer">Conteúdo educativo. Não substitui orientação de profissionais de saúde. Em uma emergência, procure um serviço de urgência.</p></div></footer>
+<script>
+const menu=document.getElementById('menu'),nav=document.getElementById('nav');
+menu.addEventListener('click',()=>{let o=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(o));menu.textContent=o?'✕':'☰';});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰';}));
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();alert('Mensagem validada! Para receber contatos, conecte este formulário a um e-mail ou WhatsApp.');});
+</script></body></html>
