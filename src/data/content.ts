@@ -44,23 +44,3 @@ export const professionals = [
     color: "#e4e4d8",
   },
 ];
-export const articles = [
-  {
-    category: "SAÚDE MENTAL",
-    title: "Uma pausa também é cuidado",
-    text: "Pequenos espaços de descanso ajudam a construir uma rotina mais acolhedora.",
-    icon: "sun",
-  },
-  {
-    category: "HÁBITOS SAUDÁVEIS",
-    title: "Bem-estar, um dia de cada vez",
-    text: "Sono, movimento e alimentação: comece com escolhas possíveis para você.",
-    icon: "leaf",
-  },
-  {
-    category: "PREVENÇÃO",
-    title: "Cuidar hoje, viver melhor amanhã",
-    text: "Informação confiável e acompanhamento profissional fazem parte do autocuidado.",
-    icon: "heart",
-  },
-] as const;

@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abra `http://localhost:3000` no seu navegador. Rotas: `/`, `/login`, `/cadastro` e `/minha-area`. O site público funciona sem variáveis Firebase e não precisa de banco de dados para exibir o conteúdo inicial.
+Abra `http://localhost:3000` no seu navegador. Rotas: `/`, `/conteudos`, `/conteudos/[slug]`, `/apoio`, `/login`, `/cadastro` e `/minha-area`. O site público funciona sem variáveis Firebase e não precisa de banco de dados para exibir o conteúdo inicial.
 
 O `package-lock.json` está versionado. Use `npm ci` para reproduzir a instalação; `npm install` fica reservado à atualização intencional de dependências.
 
@@ -44,7 +44,7 @@ index.html               HTML original enviado, preservado
 
 Serviços e profissionais são exemplos. O formulário salva planejamentos no navegador, exige data e horário futuros e impede sobreposição com outros planos locais considerando a duração do serviço. Não consulta disponibilidade nem reserva horários. A área `/minha-area` lista e permite remover esses planos com confirmação. Também registra três cuidados diários opcionais, mostra o histórico dos últimos sete dias e calcula 10 pontos demonstrativos por cuidado marcado. Desmarcar remove os pontos; os níveis Semente, Cultivar e Florescer não geram recompensas reais.
 
-Os registros usam `localStorage`, sem vínculo com Firebase Authentication, sem controle de acesso e sem sincronização entre dispositivos. Pessoas usando o mesmo navegador e origem compartilham os dados; não registre informações sensíveis. Limpar os dados do site apaga os registros. Dados inválidos ou armazenamento bloqueado exibem erro e não são sobrescritos silenciosamente. O modo local funciona no GitHub Pages, sob a mesma origem. Gestão de profissionais, área autenticada e persistência Firestore ficam para uma etapa futura. Os cartões educativos apresentam textos curtos, sem páginas de artigos ou diagnóstico médico.
+Os registros usam `localStorage`, sem vínculo com Firebase Authentication, sem controle de acesso e sem sincronização entre dispositivos. Pessoas usando o mesmo navegador e origem compartilham os dados; não registre informações sensíveis. Limpar os dados do site apaga os registros. Dados inválidos ou armazenamento bloqueado exibem erro e não são sobrescritos silenciosamente. O modo local funciona no GitHub Pages, sob a mesma origem. Gestão de profissionais, área autenticada e persistência Firestore ficam para uma etapa futura. A biblioteca `/conteudos` contém oito guias com leitura completa, referências institucionais e passos de autocuidado. A busca ignora acentos e combina tema e fase da vida. Conteúdos marcados para todas as fases aparecem em qualquer fase selecionada. A página `/apoio` diferencia escuta emocional de emergência e orienta sobre UBS, CAPS, CVV e SAMU. Nenhum conteúdo oferece diagnóstico ou prescrição.
 
 ## Configurar Firebase futuramente
 
@@ -92,3 +92,11 @@ npm run test:e2e
 ```
 
 Os testes iniciam um servidor de desenvolvimento na porta 3100. Cobrem persistência após recarga, prevenção de sobreposição, remoção com confirmação, hábitos, pontos reversíveis, virada de dia (registros antigos), datas passadas e preservação de armazenamento inválido. Para usar um Chromium já instalado no Linux: `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e`. A área local é aberta pelo menu **Minha área**, sem exigir login.
+
+## Proposta educativa e conteúdo
+
+O foco da plataforma é promover autocuidado, conscientização e qualidade de vida em todas as fases da vida por quatro eixos: estética/autoestima, saúde mental, prevenção e envelhecimento saudável. Os serviços de estética continuam como exemplos secundários de planejamento local.
+
+Os guias são mantidos em `src/data/education.ts` e gerados estaticamente com `generateStaticParams`, inclusive no GitHub Pages. Para adicionar conteúdo, escolha um slug único e inclua tema, fases da vida, resumo, seções, passos práticos e referências institucionais. Os textos são sínteses educativas, sem revisão clínica ou endosso institucional declarado; recomenda-se revisão editorial e profissional antes de uso público amplo. Não inclua diagnósticos, prescrições ou promessas de resultado. Links externos são referências, sem coleta de sintomas ou envio de dados a serviços de saúde.
+
+A suíte de navegador também verifica busca sem acentos, filtros combinados, estado vazio, os oito guias, referências, 404 e telas móveis de apoio.

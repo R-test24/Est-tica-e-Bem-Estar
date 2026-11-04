@@ -4,11 +4,11 @@ import { Footer } from "@/components/footer";
 import "./globals.css";
 export const metadata: Metadata = {
   title: {
-    default: "Estética e Bem-Estar | Seu tempo de cuidar",
+    default: "Estética e Bem-Estar | Autocuidado em todas as fases",
     template: "%s | Estética e Bem-Estar",
   },
   description:
-    "Um espaço para o seu autocuidado: estética, bem-estar e informação para uma vida mais equilibrada.",
+    "Informações educativas sobre estética, saúde mental, prevenção e envelhecimento saudável para cultivar o autocuidado em todas as fases da vida.",
 };
 export default function RootLayout({
   children,

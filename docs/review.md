@@ -1,17 +1,17 @@
 # Proposta de pull request
 
-**Título:** Adiciona área local de cuidado com planejamentos, hábitos e fidelidade demonstrativa
+**Título:** Organiza a plataforma em torno de educação e autocuidado em todas as fases da vida
 
-A seleção de agendamento agora salva serviço, profissional, data e horário neste navegador. Datas passadas e planos sobrepostos são rejeitados. `/minha-area` exibe os registros e permite removê-los com confirmação; a home e o menu direcionam para essa área.
+A home agora destaca informação e hábitos, com quatro eixos: estética/autoestima, saúde mental, prevenção e envelhecimento saudável. A biblioteca `/conteudos` permite busca sem acentos e filtros combinados por tema e fase da vida. Oito guias têm páginas próprias, passos práticos e referências institucionais, geradas estaticamente para GitHub Pages.
 
-A área também registra cuidados opcionais por dia, exibe os últimos sete dias e calcula pontos reversíveis (10 por cuidado) e níveis demonstrativos. Não há descontos reais ou pontuação por reserva. Dados ficam em `localStorage`, sem vínculo com contas Firebase ou autenticação; essa limitação aparece na interface. O estado atualiza entre abas da mesma origem e o dia é reavaliado a cada minuto. Armazenamento inválido é preservado com mensagem de erro.
+`/apoio` reúne caminhos para UBS, CAPS e CVV, distinguindo escuta emocional de atendimento de urgência (SAMU 192). O menu, os metadados e o rodapé direcionam para os conteúdos e o apoio. Planejamentos e área local de hábitos/pontos permanecem disponíveis.
 
 ## Validação
 
-- `npm run lint`, `npm run typecheck` e `GITHUB_PAGES=true npm run build`.
-- `npm run test:e2e`: testes Playwright para persistência, sobreposição, remoção, hábitos/pontos, datas passadas, registros de dias anteriores e falhas de armazenamento.
-- Revisão responsiva de `/minha-area` em 320 pixels.
+- Lint, TypeScript e exportação estática para GitHub Pages.
+- Testes Playwright: busca e filtros, estado vazio, oito guias com fontes/passos, slug desconhecido, orientação de apoio e responsividade em 320px.
+- Regressão dos cinco testes existentes de planejamentos e hábitos.
 
 ## Limites
 
-Sem disponibilidade real, envio ao profissional, reserva confirmada, dados médicos, sincronização Firestore ou isolamento por conta. Pessoas no mesmo navegador/origem compartilham os registros locais. Nenhuma infraestrutura Firebase foi provisionada. O conteúdo é educativo; o programa de fidelidade é uma demonstração.
+Orientações gerais, sem diagnóstico, prescrição, avaliação de sintomas ou revisão clínica declarada. Referências externas não representam endosso institucional. Os registros pessoais continuam locais e compartilhados no navegador; Firebase não foi provisionado. Nenhuma reserva real é confirmada.

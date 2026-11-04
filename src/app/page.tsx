@@ -9,7 +9,9 @@ import {
 } from "lucide-react";
 import { ActionLink, Icon, SectionHeading } from "@/components/ui";
 import { BookingForm } from "@/components/booking-form";
-import { services, professionals, articles } from "@/data/content";
+import Link from "next/link";
+import { guides, themes } from "@/data/education";
+import { services, professionals } from "@/data/content";
 export default function Home() {
   return (
     <main id="conteudo">
@@ -18,34 +20,34 @@ export default function Home() {
           <div className="hero-copy">
             <p className="eyebrow">
               <span className="tiny-line" />
-              UM ENCONTRO COM A SUA MELHOR VERSÃO
+              AUTOCUIDADO EM TODAS AS FASES DA VIDA
             </p>
             <h1>
-              Seu tempo de
+              Informação para
               <br />
-              cuidar. Seu jeito
+              cuidar. Hábitos
               <br />
-              de <em>florescer.</em>
+              para <em>florescer.</em>
             </h1>
             <p className="hero-description">
-              Estética, acolhimento e bem-estar em um só lugar.
-              <br className="desktop-break" /> Um espaço para desacelerar e se
-              reconectar com você.
+              Estética, saúde mental, prevenção e envelhecimento saudável. Um
+              espaço para aprender, cultivar o autocuidado e viver com mais
+              qualidade.
             </p>
             <div className="hero-actions">
-              <ActionLink href="#agendamento">Reserve seu momento</ActionLink>
-              <a className="text-link" href="#servicos">
-                Conheça nossos cuidados <ArrowDown size={16} />
+              <ActionLink href="/conteudos">Explore os conteúdos</ActionLink>
+              <a className="text-link" href="#bem-estar">
+                Conheça os temas <ArrowDown size={16} />
               </a>
             </div>
             <div className="hero-reassurance">
               <span>
                 <Check size={14} />
-                Cuidado individualizado
+                Informação e acolhimento
               </span>
               <span>
                 <Check size={14} />
-                Respeito à sua essência
+                Respeito a cada fase
               </span>
             </div>
           </div>
@@ -90,12 +92,58 @@ export default function Home() {
           </span>
         </div>
       </div>
+      <section className="section shell" id="temas">
+        <div className="section-top">
+          <SectionHeading
+            eyebrow="QUATRO CAMINHOS, UM MESMO CUIDADO"
+            title="Bem-estar para a vida toda."
+            description="Informação para apoiar suas escolhas, sem padrões de beleza, cobranças ou diagnósticos online."
+          />
+          <ActionLink href="/conteudos" secondary>
+            Aprender a se cuidar
+          </ActionLink>
+        </div>
+        <div className="pillar-grid">
+          {themes.map((t) => (
+            <article className="pillar-card" key={t.id}>
+              <Icon name={t.icon} />
+              <h3>{t.label}</h3>
+              <p>{t.description}</p>
+              <Link className="text-link" href="/conteudos">
+                Explorar conteúdos ↗
+              </Link>
+            </article>
+          ))}
+        </div>
+        <div className="life-stages">
+          <p className="eyebrow">CADA FASE TEM SEU RITMO</p>
+          <h2>O cuidado acompanha as suas mudanças.</h2>
+          <div>
+            <p>
+              <strong>Juventude</strong>Autoestima, relações e uma convivência
+              mais gentil com a própria imagem.
+            </p>
+            <p>
+              <strong>Vida adulta</strong>Equilíbrio na rotina, vínculos e
+              prevenção com orientação.
+            </p>
+            <p>
+              <strong>Pessoa idosa</strong>Autonomia, participação social e
+              respeito à sua história.
+            </p>
+          </div>
+          <p className="muted">
+            As experiências são diversas. Adapte os cuidados à sua realidade e
+            busque orientação profissional quando necessário.
+          </p>
+        </div>
+      </section>
       <section className="section shell" id="servicos">
         <div className="section-top">
           <SectionHeading
             eyebrow="NOSSOS CUIDADOS"
             title="Pequenos rituais. Grandes sensações."
-            description="Experiências pensadas para respeitar seu ritmo e valorizar o que faz você se sentir bem."
+            description="Exemplos de experiências de estética e bem-estar para planejar localmente. Não são tratamentos médicos nem ofertas de reserva confirmada."
           />
           <a className="text-link" href="#agendamento">
             Encontre seu cuidado <ArrowUpRight size={17} />
@@ -201,17 +249,23 @@ export default function Home() {
           title="Bem-estar também se aprende."
           description="Inspirações e conteúdos educativos para cuidar de você com mais consciência."
         />
-        <div className="article-grid">
-          {articles.map((a) => (
-            <article className="article-card" key={a.title}>
-              <div className="article-icon">
-                <Icon name={a.icon} />
-              </div>
-              <p className="eyebrow">{a.category}</p>
-              <h3>{a.title}</h3>
-              <p className="muted">{a.text}</p>
-            </article>
-          ))}
+        <div className="education-grid">
+          {themes.map((t) => {
+            const g = guides.find((g) => g.theme === t.id)!;
+            return (
+              <article className="article-card" key={g.slug}>
+                <div className="article-icon">
+                  <Icon name={t.icon} />
+                </div>
+                <p className="eyebrow">{t.label}</p>
+                <h3>{g.title}</h3>
+                <p className="muted">{g.summary}</p>
+                <Link className="text-link" href={`/conteudos/${g.slug}`}>
+                  Ler orientação ↗
+                </Link>
+              </article>
+            );
+          })}
         </div>
         <div className="future-banner">
           <Leaf aria-hidden="true" />
@@ -225,6 +279,19 @@ export default function Home() {
           <ActionLink href="/minha-area" secondary>
             Minha jornada
           </ActionLink>
+        </div>
+      </section>
+      <section className="support-home">
+        <div className="shell">
+          <div>
+            <p className="eyebrow">VOCÊ NÃO PRECISA ESTAR SOZINHO</p>
+            <h2>Acolhimento também faz parte do cuidado.</h2>
+            <p>
+              Conheça caminhos de apoio emocional e atendimento na rede pública.
+              Em uma emergência, ligue 192.
+            </p>
+          </div>
+          <ActionLink href="/apoio">Onde encontrar apoio</ActionLink>
         </div>
       </section>
     </main>

@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { Leaf, Menu, X } from "lucide-react";
 const links = [
+  ["Conteúdos", "/conteudos"],
+  ["Autocuidado", "/#temas"],
   ["Serviços", "/#servicos"],
-  ["Profissionais", "/#profissionais"],
-  ["Bem-estar", "/#bem-estar"],
-  ["Agendamento", "/#agendamento"],
+  ["Apoio", "/apoio"],
   ["Minha área", "/minha-area"],
 ];
 export function Header() {

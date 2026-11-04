@@ -15,8 +15,8 @@ export function Footer() {
             <p>Mais equilíbrio. Mais cuidado. Mais você.</p>
           </div>
           <nav aria-label="Navegação do rodapé">
-            <Link href="/#servicos">Serviços</Link>
-            <Link href="/#bem-estar">Bem-estar</Link>
+            <Link href="/conteudos">Conteúdos</Link>
+            <Link href="/apoio">Onde encontrar apoio</Link>
             <Link href="/cadastro">Criar conta</Link>
           </nav>
         </div>
