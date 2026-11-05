@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -12,6 +13,7 @@ import {
 } from "@/lib/firebase/client";
 import { ArrowUpRight, Leaf } from "lucide-react";
 export function AuthForm({ mode }: { mode: "login" | "cadastro" }) {
+  const router = useRouter();
   const registering = mode === "cadastro";
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
@@ -28,8 +30,7 @@ export function AuthForm({ mode }: { mode: "login" | "cadastro" }) {
       setMessage("As senhas precisam ser iguais.");
       return;
     }
-    const services = getFirebaseServices();
-    if (!services) {
+    if (!isFirebaseConfigured) {
       setMessage(
         "O acesso às contas estará disponível em breve. Nenhum dado foi enviado.",
       );
@@ -37,16 +38,18 @@ export function AuthForm({ mode }: { mode: "login" | "cadastro" }) {
     }
     setPending(true);
     try {
+      const services = getFirebaseServices()!;
       if (registering)
         await createUserWithEmailAndPassword(services.auth, email, password);
       else await signInWithEmailAndPassword(services.auth, email, password);
       setSuccess(true);
       setMessage(
         registering
-          ? "Conta criada com sucesso. Sua área pessoal estará disponível em breve."
-          : "Você entrou com sucesso. Sua área pessoal estará disponível em breve.",
+          ? "Conta criada com sucesso. Abrindo sua área de cuidado."
+          : "Você entrou com sucesso. Abrindo sua área de cuidado.",
       );
       form.reset();
+      router.push("/minha-area");
     } catch (error) {
       const code = error instanceof FirebaseError ? error.code : "";
       setMessage(
@@ -147,9 +150,16 @@ export function AuthForm({ mode }: { mode: "login" | "cadastro" }) {
             {message}
           </p>
         </form>
-        <p className="auth-switch">
-          <Link href="/minha-area">Explorar minha área em modo local</Link>
-        </p>
+        {!registering && (
+          <p className="auth-switch">
+            <Link href="/recuperar-senha">Esqueci minha senha</Link>
+          </p>
+        )}
+        {!isFirebaseConfigured && (
+          <p className="auth-switch">
+            <Link href="/minha-area">Explorar minha área em modo local</Link>
+          </p>
+        )}
         <p className="auth-switch">
           {registering ? "Já tem uma conta?" : "Ainda não tem uma conta?"}{" "}
           <Link href={registering ? "/login" : "/cadastro"}>

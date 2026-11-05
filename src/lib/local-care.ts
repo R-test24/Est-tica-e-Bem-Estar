@@ -19,7 +19,7 @@ export type Booking = {
   time: string;
   createdAt: string;
 };
-type CareData = {
+export type CareData = {
   version: 1;
   bookings: Booking[];
   checks: Record<string, string[]>;
@@ -111,7 +111,10 @@ export function useLocalCare() {
     error: (parsed.error || "") as string,
   };
 }
-export function saveBooking(input: Omit<Booking, "id" | "createdAt">) {
+export function validateBooking(
+  input: Omit<Booking, "id" | "createdAt">,
+  bookings: Booking[],
+) {
   if (
     !services.some((s) => s.name === input.service) ||
     !professionals.some((p) => p.name === input.professional) ||
@@ -122,12 +125,11 @@ export function saveBooking(input: Omit<Booking, "id" | "createdAt">) {
   const start = new Date(`${input.date}T${input.time}:00`).getTime();
   if (!Number.isFinite(start) || start <= Date.now())
     throw new Error("Escolha uma data e um horário futuros.");
-  const data = read();
   const duration = (name: string) =>
     Number(services.find((s) => s.name === name)!.duration.split(" ")[0]) *
     60000;
   if (
-    data.bookings.some((b) => {
+    bookings.some((b) => {
       const other = new Date(`${b.date}T${b.time}:00`).getTime();
       return (
         start < other + duration(b.service) &&
@@ -138,6 +140,10 @@ export function saveBooking(input: Omit<Booking, "id" | "createdAt">) {
     throw new Error(
       "Você já tem um planejamento que coincide com esse horário. Escolha outro horário ou remova o anterior na sua área.",
     );
+}
+export function saveBooking(input: Omit<Booking, "id" | "createdAt">) {
+  const data = read();
+  validateBooking(input, data.bookings);
   write({
     ...data,
     bookings: [

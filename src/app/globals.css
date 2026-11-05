@@ -1842,3 +1842,21 @@ select {
     font-size: 36px;
   }
 }
+
+.reset-card {
+  max-width: 520px;
+  margin: 20px auto;
+}
+.reset-card h1 {
+  font-size: 36px;
+  margin: 18px 0;
+}
+.site-header button.login-link {
+  background: transparent;
+  font: inherit;
+  color: inherit;
+}
+.habit-list input:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

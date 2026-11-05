@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useSession, endSession } from "./session-provider";
 import { useState } from "react";
 import { Leaf, Menu, X } from "lucide-react";
 const links = [
@@ -10,6 +11,9 @@ const links = [
   ["Minha área", "/minha-area"],
 ];
 export function Header() {
+  const { user } = useSession();
+  const [sessionMessage, setSessionMessage] = useState("");
+  const [leaving, setLeaving] = useState(false);
   const [open, setOpen] = useState(false);
   return (
     <header className="site-header">
@@ -43,13 +47,35 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <Link
-            className="login-link"
-            href="/login"
-            onClick={() => setOpen(false)}
-          >
-            Entrar <span aria-hidden="true">↗</span>
-          </Link>
+          {user ? (
+            <button
+              className="login-link"
+              disabled={leaving}
+              onClick={async () => {
+                setLeaving(true);
+                try {
+                  await endSession();
+                  setOpen(false);
+                  setSessionMessage("");
+                } catch {
+                  setSessionMessage("Não foi possível sair. Tente novamente.");
+                } finally {
+                  setLeaving(false);
+                }
+              }}
+            >
+              {leaving ? "Saindo…" : "Sair da conta"}
+            </button>
+          ) : (
+            <Link
+              className="login-link"
+              href="/login"
+              onClick={() => setOpen(false)}
+            >
+              Entrar <span aria-hidden="true">↗</span>
+            </Link>
+          )}
+          {sessionMessage && <p role="status">{sessionMessage}</p>}
         </nav>
       </div>
     </header>

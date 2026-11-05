@@ -1,0 +1,51 @@
+rules_version = '2';
+// Prototype: review before broad release.
+// Model: /users/{uid}/bookings/{id}: service/professional enums (required),
+// startsAt timestamp (future at create), createdAt timestamp (server time),
+// status = 'planned'. Immutable: update denied. Owner may read/delete.
+// /users/{uid}/days/{YYYY-MM-DD}: day timestamp (UTC midnight, immutable),
+// habits unique enum list (0..3), updatedAt timestamp (server time).
+// Only today's local day (within +/-1 UTC day) may be created/updated.
+// No user root/profile document is required. All other paths denied.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() { return request.auth != null; }
+    function isOwner(uid) { return isAuthenticated() && request.auth.uid == uid; }
+    function isValidBooking(d) {
+      return d.keys().hasAll(['service','professional','startsAt','createdAt','status'])
+        && d.keys().hasOnly(['service','professional','startsAt','createdAt','status'])
+        && d.service in ['Cuidados com a pele','Massagem relaxante','Ritual de autocuidado']
+        && d.professional in ['Marina Oliveira','Camila Santos','Beatriz Lima']
+        && d.startsAt is timestamp && d.startsAt > request.time
+        && d.createdAt is timestamp && d.createdAt == request.time
+        && d.status == 'planned';
+    }
+    function pad(n) { return n < 10 ? '0' + string(n) : string(n); }
+    function dayKey(day) { return string(day.year()) + '-' + pad(day.month()) + '-' + pad(day.day()); }
+    function isValidDay(d, dayId) {
+      return d.keys().hasAll(['day','habits','updatedAt'])
+        && d.keys().hasOnly(['day','habits','updatedAt'])
+        && d.day is timestamp && d.day == d.day.date()
+        && dayId == dayKey(d.day)
+        && d.day >= request.time.date() - duration.value(1,'d')
+        && d.day <= request.time.date() + duration.value(1,'d')
+        && d.habits is list && d.habits.size() <= 3
+        && d.habits.toSet().size() == d.habits.size()
+        && d.habits.hasOnly(['pausa','movimento','autocuidado'])
+        && d.updatedAt is timestamp && d.updatedAt == request.time;
+    }
+    match /users/{uid}/bookings/{id} {
+      allow read, delete: if isOwner(uid);
+      allow create: if isOwner(uid) && isValidBooking(request.resource.data);
+      allow update: if false;
+    }
+    match /users/{uid}/days/{dayId} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && isValidDay(request.resource.data, dayId);
+      allow update: if isOwner(uid) && isValidDay(request.resource.data, dayId)
+        && request.resource.data.day == resource.data.day;
+      allow delete: if isOwner(uid);
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

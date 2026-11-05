@@ -2,16 +2,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { CalendarDays, Award, Check, Trash2 } from "lucide-react";
-import {
-  habits,
-  localDay,
-  removeBooking,
-  toggleHabit,
-  useLocalCare,
-} from "@/lib/local-care";
+import { habits, localDay } from "@/lib/local-care";
+import { useCare, deleteCareBooking, changeCareHabit } from "@/lib/use-care";
 import { Icon } from "@/components/ui";
 export function CareDashboard() {
-  const { data, ready, error } = useLocalCare();
+  const { data, ready, error, mode } = useCare();
+  const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const [removing, setRemoving] = useState<string | null>(null);
   const today = localDay();
@@ -38,9 +34,10 @@ export function CareDashboard() {
       }),
     };
   });
-  function action(fn: () => void, success: string) {
+  async function action(fn: () => Promise<void>, success: string) {
+    setPending(true);
     try {
-      fn();
+      await fn();
       setMessage(success);
     } catch (e) {
       setMessage(
@@ -48,6 +45,8 @@ export function CareDashboard() {
           ? e.message
           : "Não foi possível salvar. Confira o armazenamento do navegador.",
       );
+    } finally {
+      setPending(false);
     }
   }
   return (
@@ -67,16 +66,18 @@ export function CareDashboard() {
         </Link>
       </div>
       <p className="notice">
-        Modo local de demonstração. Os dados ficam neste navegador,
-        compartilhados entre quem o utiliza. Não são vinculados ao login, não
-        sincronizam entre dispositivos e podem ser perdidos ao limpar o
-        armazenamento. Não registre informações sensíveis.
+        {mode === "firebase"
+          ? "Seus dados são vinculados à sua conta. Os planejamentos não confirmam reservas com profissionais. Os pontos continuam demonstrativos. Não registre informações sensíveis."
+          : "Modo local de demonstração. Os dados ficam neste navegador, compartilhados entre quem o utiliza. Não são vinculados ao login, não sincronizam entre dispositivos e podem ser perdidos ao limpar o armazenamento. Não registre informações sensíveis."}
       </p>
       {!ready ? (
         <p role="status">Carregando seus registros…</p>
       ) : error ? (
         <p role="alert" className="notice">
-          {error}
+          {error}{" "}
+          {mode === "firebase" && (
+            <Link href="/login">Entrar na minha conta ↗</Link>
+          )}
         </p>
       ) : (
         <>
@@ -104,7 +105,7 @@ export function CareDashboard() {
               <p className="eyebrow">TEMPO PARA VOCÊ</p>
               <h2 id="plans-title">Meus planejamentos</h2>
               <p className="muted">
-                Registros locais, sem confirmação ou envio ao profissional.
+                Planejamentos sem confirmação ou envio ao profissional.
               </p>
               {bookings.length === 0 ? (
                 <div className="empty-state">
@@ -123,7 +124,7 @@ export function CareDashboard() {
                   {bookings.map((b) => (
                     <li key={b.id}>
                       <span className="profile-label">
-                        PLANEJAMENTO LOCAL • NÃO CONFIRMADO
+                        PLANEJAMENTO • NÃO CONFIRMADO
                       </span>
                       <h3>{b.service}</h3>
                       <p>{b.professional}</p>
@@ -135,13 +136,14 @@ export function CareDashboard() {
                       </p>
                       {removing === b.id ? (
                         <div className="remove-confirm">
-                          <p>Remover este planejamento deste navegador?</p>
+                          <p>Remover este planejamento?</p>
                           <button
                             className="button button-secondary"
+                            disabled={pending}
                             onClick={() => {
                               action(
-                                () => removeBooking(b.id),
-                                "Planejamento removido deste navegador.",
+                                () => deleteCareBooking(b.id),
+                                "Planejamento removido.",
                               );
                               setRemoving(null);
                             }}
@@ -184,9 +186,10 @@ export function CareDashboard() {
                     <input
                       type="checkbox"
                       checked={checked.includes(h.id)}
+                      disabled={pending}
                       onChange={() =>
                         action(
-                          () => toggleHabit(h.id),
+                          () => changeCareHabit(h.id),
                           "Registro de hoje atualizado.",
                         )
                       }

@@ -8,3 +8,6 @@ next-env.d.ts
 .DS_Store
 playwright-report/
 test-results/
+!.env.emulator.example
+*-debug.log
+.firebase/

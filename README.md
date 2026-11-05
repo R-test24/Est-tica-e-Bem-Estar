@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Abra `http://localhost:3000` no seu navegador. Rotas: `/`, `/conteudos`, `/conteudos/[slug]`, `/apoio`, `/login`, `/cadastro` e `/minha-area`. O site público funciona sem variáveis Firebase e não precisa de banco de dados para exibir o conteúdo inicial.
+Abra `http://localhost:3000` no seu navegador. Rotas: `/`, `/conteudos`, `/conteudos/[slug]`, `/apoio`, `/login`, `/cadastro`, `/recuperar-senha` e `/minha-area`. O site público funciona sem variáveis Firebase e não precisa de banco de dados para exibir o conteúdo inicial.
 
 O `package-lock.json` está versionado. Use `npm ci` para reproduzir a instalação; `npm install` fica reservado à atualização intencional de dependências.
 
@@ -39,22 +39,18 @@ index.html               HTML original enviado, preservado
 
 - Home com serviços, proposta de cuidado, profissionais, planejamento de agendamento e conteúdo educativo.
 - Menu móvel acessível e formulários com validação nativa, feedback e estado de envio.
-- Login e cadastro por e-mail/senha usando Firebase Authentication **quando configurado**. Sem configuração, o site informa que o acesso ainda não está disponível e não envia dados.
-- Inicialização do cliente Firestore preparada; nenhuma leitura ou gravação de documentos nesta etapa.
+- Login e cadastro por e-mail/senha usando Firebase Authentication **quando configurado**. Sem configuração, o site informa que o acesso ainda não está disponível e não envia dados de conta.
+- Integração Firestore por usuário preparada para planejamentos e cuidados diários; ativada quando a configuração Firebase estiver presente.
 
-Serviços e profissionais são exemplos. O formulário salva planejamentos no navegador, exige data e horário futuros e impede sobreposição com outros planos locais considerando a duração do serviço. Não consulta disponibilidade nem reserva horários. A área `/minha-area` lista e permite remover esses planos com confirmação. Também registra três cuidados diários opcionais, mostra o histórico dos últimos sete dias e calcula 10 pontos demonstrativos por cuidado marcado. Desmarcar remove os pontos; os níveis Semente, Cultivar e Florescer não geram recompensas reais.
+Serviços e profissionais são exemplos. No modo local, o formulário salva planejamentos no navegador, exige data e horário futuros e impede sobreposição com outros planos locais considerando a duração do serviço. Não consulta disponibilidade nem reserva horários. A área `/minha-area` lista e permite remover esses planos com confirmação. Também registra três cuidados diários opcionais, mostra o histórico dos últimos sete dias e calcula 10 pontos demonstrativos por cuidado marcado. Desmarcar remove os pontos; os níveis Semente, Cultivar e Florescer não geram recompensas reais.
 
-Os registros usam `localStorage`, sem vínculo com Firebase Authentication, sem controle de acesso e sem sincronização entre dispositivos. Pessoas usando o mesmo navegador e origem compartilham os dados; não registre informações sensíveis. Limpar os dados do site apaga os registros. Dados inválidos ou armazenamento bloqueado exibem erro e não são sobrescritos silenciosamente. O modo local funciona no GitHub Pages, sob a mesma origem. Gestão de profissionais, área autenticada e persistência Firestore ficam para uma etapa futura. A biblioteca `/conteudos` contém oito guias com leitura completa, referências institucionais e passos de autocuidado. A busca ignora acentos e combina tema e fase da vida. Conteúdos marcados para todas as fases aparecem em qualquer fase selecionada. A página `/apoio` diferencia escuta emocional de emergência e orienta sobre UBS, CAPS, CVV e SAMU. Nenhum conteúdo oferece diagnóstico ou prescrição.
+No modo local, os registros usam `localStorage`, sem vínculo com Firebase Authentication, sem controle de acesso e sem sincronização entre dispositivos. Pessoas usando o mesmo navegador e origem compartilham os dados; não registre informações sensíveis. Limpar os dados do site apaga os registros. Dados inválidos ou armazenamento bloqueado exibem erro e não são sobrescritos silenciosamente. O modo local funciona no GitHub Pages, sob a mesma origem. No modo Firebase configurado, os registros são vinculados ao UID e a área exige login. Gestão de profissionais e reservas reais permanecem futuras. A biblioteca `/conteudos` contém oito guias com leitura completa, referências institucionais e passos de autocuidado. A busca ignora acentos e combina tema e fase da vida. Conteúdos marcados para todas as fases aparecem em qualquer fase selecionada. A página `/apoio` diferencia escuta emocional de emergência e orienta sobre UBS, CAPS, CVV e SAMU. Nenhum conteúdo oferece diagnóstico ou prescrição.
 
-## Configurar Firebase futuramente
+## Firebase preparado
 
-1. Escolha um projeto Firebase e registre um aplicativo Web no Console.
-2. Copie `.env.example` para `.env.local` e preencha as quatro variáveis com a configuração pública desse aplicativo. Nunca adicione credenciais de administrador ou chaves privadas em variáveis `NEXT_PUBLIC_*`.
-3. Em Authentication, habilite **E-mail/senha** e confira os domínios autorizados (incluindo `localhost` para desenvolvimento).
-4. Reinicie o servidor. Valide criação de conta, entrada e mensagens de erro com um projeto de desenvolvimento.
-5. Antes de usar Firestore, defina instância/edição, região, modelo de dados e regras de acesso. Crie testes de regras e use emuladores antes de liberar gravações. Não habilite acesso público irrestrito. O código atual não exige criar um banco nem implantar regras.
+A aplicação oferece autenticação por e-mail/senha, recuperação de senha, sessão e logout. Com as quatro variáveis Web configuradas, planejamentos e cuidados passam a usar Firestore por UID. Sem configuração, o modo local continua disponível; dados locais não são migrados automaticamente. Nenhum projeto real foi criado ou conectado.
 
-A criação de conta persiste apenas no Firebase Authentication. Não há perfil Firestore ou coleta de dados médicos. Os cuidados diários são registrados apenas no navegador. A configuração Firebase e os fluxos reais de autenticação precisam ser validados no projeto escolhido. Em produção, revise política de privacidade, fluxo de recuperação de senha, verificação de e-mail e gestão de sessão conforme a próxima etapa do produto.
+O passo a passo de configuração, regras, modelo, emuladores, testes, limitações e Hosting está em [docs/firebase.md](docs/firebase.md). A compilação das regras e os testes Firestore estão pendentes da liberação do download do emulador; trate as regras como protótipo até validar e revisar.
 
 ## Implantação
 
